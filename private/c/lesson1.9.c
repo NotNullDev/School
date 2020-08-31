@@ -3,40 +3,52 @@
 #define MAXLINE 100
 
 int getLine(char line[], int maxline);
-
-int copy(char to[], char from[]);
+void copy(char from[], char to[]);
 
 int main(void)
 {
-    int input, currentPositionInLine = 0, maxLength = 0;
-    char currentLine[MAXLINE], maxLine[MAXLINE];
+    int currentLineLength;
+    int longestLineLength;
 
-    while (((input = getchar()) != EOF))
+    char currentLine[MAXLINE];
+    char longestLine[MAXLINE];
+
+    longestLineLength = 0;
+
+    while ((currentLineLength = getLine(currentLine, MAXLINE)) > 0)
     {
-        if (input != '\n')
+        if (currentLineLength > longestLineLength)
         {
-            currentLine[currentPositionInLine] = input;
-            ++currentPositionInLine;
-        }
-        else
-        {
-            if ((currentPositionInLine > maxLength) && maxLine != 0)
-            {
-                for (int i = 0; i < currentPositionInLine; ++i)
-                {
-                    maxLine[i] = currentLine[i];
-                }
-                maxLength = currentPositionInLine;
-                currentPositionInLine = 0;
-            }
+            copy(currentLine, longestLine);
+            longestLineLength = currentLineLength;
         }
     }
-    putchar('\n');
-    for (int i = 0; i < maxLength; ++i)
-    {
-        putchar(maxLine[i]);
-    }
-    putchar('\n');
+
+    printf("\nLongest line was: \n%s \n", longestLine);
 
     return 0;
+}
+
+int getLine(char line[], int maxline)
+{
+    int input;
+    int currentLength;
+
+    for (int i = 0; (input = getchar()) != '\n'; ++i)
+    {
+        if (input == EOF)
+            return 0;
+
+        line[i] = input;
+        ++currentLength;
+    }
+    return currentLength;
+}
+
+void copy(char from[], char to[])
+{
+    for (int i = 0; from[i] != '\0'; ++i)
+    {
+        to[i] = from[i];
+    }
 }
