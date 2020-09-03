@@ -36,38 +36,34 @@ int getUserInput(char userInput[])
 }
 int detab(char input[], int inputLength, int tab_every)
 {
-    int amountOfTabs, textBeforeTabLength, textAfterTabLength, firstTabIndex, tabsPositions[MAXLINE / TAB_LENGTH], newArrayLength;
+    int amountOfTabs, textBeforeTabLength, textAfterTabLength, firstTabIndex, tabsPositions[MAXLINE / TAB_LENGTH], newArrayLength, beforeIndex, afterIndex, currentArrayLength;
     char textBeforeTab[MAXLINE], textAfterTab[MAXLINE], newArray[MAXLINE];
 
     amountOfTabs = inputLength / tab_every;
     firstTabIndex = tab_every - 1;
-    newArrayLength = inputLength + TAB_LENGTH * amountOfTabs;
+    newArrayLength = inputLength + 3 * amountOfTabs;
     for (int i = 0; i < amountOfTabs; ++i)
     {
-        tabsPositions[i] = firstTabIndex + tab_every * i;
+        tabsPositions[i] = firstTabIndex + 8 * i;
     }
 
     for (int i = 0; i < amountOfTabs; ++i)
     {
         textBeforeTabLength = tabsPositions[i] - 1;
         textAfterTabLength = inputLength - (textBeforeTabLength + TAB_LENGTH);
+        currentArrayLength = textBeforeTabLength + TAB_LENGTH * (i + 1) + textAfterTabLength;
 
-        for (int j = 0; j < textBeforeTabLength; ++j)
+        beforeIndex = 0;
+        afterIndex = newArrayLength - tabsPositions[i] + TAB_LENGTH - 1;
+        for (int j = 0; j < currentArrayLength; ++j)
         {
-            newArray[j] = textBeforeTab[j];
+            if (j <= tabsPositions[i])
+                continue;
+            if (j >= tabsPositions[i] + TAB_LENGTH)
+                input[j] = input[afterIndex + j];
+            else
+                input[j] = ' ';
         }
-        for (int j = 0; j < TAB_LENGTH; ++j)
-        {
-            newArray[textBeforeTabLength - 1 + 1 + j] = ' ';
-        }
-        for (int j = 0; j < textAfterTabLength; ++j)
-        {
-            newArray[textBeforeTabLength - 1 + 1 + TAB_LENGTH + 1 + j] = textAfterTab[i];
-        }
-    }
-    for (int i = 0; i < newArrayLength; ++i)
-    {
-        input[i] = newArray[i];
     }
     return newArrayLength;
 }
