@@ -1,119 +1,73 @@
 #include <stdio.h>
 
+#define TAB_LENGTH 4
+#define TAB_SPACES 5
 #define MAXLINE 100
-#define TAB_TO_SPACES 8
 
-void replaceTabsToSpaces(char text[], int textLength);
 int getUserInput(char userInput[]);
+
+int detab(char input[], int inputLength, int tab_every);
 
 int main(void)
 {
     char userInput[MAXLINE];
-    char oldInput[MAXLINE];
-
     int userInputLength;
-
     userInputLength = getUserInput(userInput);
-    for (int i = 0; i < userInputLength; ++i)
-        oldInput[i] = userInput[i];
-    replaceTabsToSpaces(userInput, userInputLength);
-
-    printf("\nOld text: \n%s\nNew text: \n%s\n", oldInput, userInput);
-
+    userInputLength = detab(userInput, userInputLength, TAB_SPACES);
+    printf("\nNew Array:\n%s\n", userInput);
     return 0;
 }
 
-/*
-    return value is length of input
-*/
 int getUserInput(char userInput[])
 {
     int length, input;
     length = 0;
     for (int i = 0; (input = getchar()) != EOF; ++i)
     {
-        userInput[i] = input;
+        if (i < MAXLINE)
+            userInput[i] = input;
+        else
+            userInput[MAXLINE] = '\0';
         ++length;
     }
     userInput[length++] = '\0';
 
     return length;
 }
-
-void replaceTabsToSpaces(char text[], int textLength)
+int detab(char input[], int inputLength, int tab_every)
 {
-    int amountOfTabs;
-    int tabsPositions[MAXLINE];
+    int amountOfTabs, textBeforeTabLength, textAfterTabLength, firstTabIndex, tabsPositions[MAXLINE / TAB_LENGTH], newArrayLength;
+    char textBeforeTab[MAXLINE], textAfterTab[MAXLINE], newArray[MAXLINE];
 
-    char textAfterTab[MAXLINE];
-    char textBeforeTab[MAXLINE];
-
-    /*
-        find all tabs in text and save their amount and positions to variables 
-    */
-    amountOfTabs = 0;
-    for (int i = 0; i < textLength; ++i)
-    {
-        if (text[i] == '\t')
-        {
-            tabsPositions[amountOfTabs] = i;
-            ++amountOfTabs;
-        }
-    }
-
-    /*
-        slice text on two elements before and after tab and save these elements to arrays;
-        repeat n times where n is amount of tabs of the text
-    */
-
-    /*
-        tab position = 3 (4th element)
-        which element? 4th (3 +1)
-        how many before? 4th - 1 = 3
-        how many after? max - (which element + 1) = max - ((3+1) +1) = max - (position +1 + 1) = max - (position +2)
-
-        [1,2,3, tab , 5,6,7,8];
-        tabPosition = 3
-        lengthBefore = [tab]
-        9 - (3+2)
-        lengthAfter = [max - (tabPoisiton + 2)]
-   */
-
-    int currentTabPositionInText;
-    int lengthAfterTab;
-    int lengthBeforeTab;
+    amountOfTabs = inputLength / tab_every;
+    firstTabIndex = tab_every - 1;
+    newArrayLength = inputLength + TAB_LENGTH * amountOfTabs;
     for (int i = 0; i < amountOfTabs; ++i)
     {
-        currentTabPositionInText = tabsPositions[amountOfTabs - 1 - i];
-        //before tab
-        lengthBeforeTab = currentTabPositionInText;
-        for (int j = 0; j < lengthBeforeTab; ++j)
+        tabsPositions[i] = firstTabIndex + tab_every * i;
+    }
+
+    for (int i = 0; i < amountOfTabs; ++i)
+    {
+        textBeforeTabLength = tabsPositions[i] - 1;
+        textAfterTabLength = inputLength - (textBeforeTabLength + TAB_LENGTH);
+
+        for (int j = 0; j < textBeforeTabLength; ++j)
         {
-            textBeforeTab[j] = text[j];
+            newArray[j] = textBeforeTab[j];
         }
-        //after tab
-        int startPositon;
-        lengthAfterTab = textLength - (currentTabPositionInText + 2);
-        for (int j = 0; j < lengthAfterTab; j++)
+        for (int j = 0; j < TAB_LENGTH; ++j)
         {
-            startPositon = currentTabPositionInText + 1;
-            textAfterTab[j] = text[startPositon + j];
+            newArray[textBeforeTabLength - 1 + 1 + j] = ' ';
         }
-        /*
-            and finally replace old array with array that exist of before, amount of spaces = 1tab, after
-        */
-        int newArratLength;
-        int afterTabCounter;
-        newArratLength = lengthBeforeTab + 8 + lengthAfterTab;
-        afterTabCounter = 0;
-        for (int i = 0; i < newArratLength; ++i)
+        for (int j = 0; j < textAfterTabLength; ++j)
         {
-            if (i < lengthBeforeTab)
-                text[i] = textBeforeTab[i];
-            else if (i > lengthBeforeTab - 1 + 4 * amountOfTabs)
-                text[i] = textAfterTab[afterTabCounter++];
-            else
-                text[i] = ' ';
+            newArray[textBeforeTabLength - 1 + 1 + TAB_LENGTH + 1 + j] = textAfterTab[i];
         }
     }
+    for (int i = 0; i < newArrayLength; ++i)
+    {
+        input[i] = newArray[i];
+    }
+    return newArrayLength;
 }
