@@ -9,14 +9,16 @@ int getUserInput(char userInput[]);
 int main(void)
 {
     char userInput[MAXLINE];
+    char oldInput[MAXLINE];
 
     int userInputLength;
 
     userInputLength = getUserInput(userInput);
-
+    for (int i = 0; i < userInputLength; ++i)
+        oldInput[i] = userInput[i];
     replaceTabsToSpaces(userInput, userInputLength);
 
-    printf("Job done.");
+    printf("\nOld text: \n%s\nNew text: \n%s\n", oldInput, userInput);
 
     return 0;
 }
@@ -27,12 +29,13 @@ int main(void)
 int getUserInput(char userInput[])
 {
     int length, input;
+    length = 0;
     for (int i = 0; (input = getchar()) != EOF; ++i)
     {
         userInput[i] = input;
         ++length;
     }
-    userInput[length] = '\0';
+    userInput[length++] = '\0';
 
     return length;
 }
@@ -81,7 +84,7 @@ void replaceTabsToSpaces(char text[], int textLength)
     int lengthBeforeTab;
     for (int i = 0; i < amountOfTabs; ++i)
     {
-        currentTabPositionInText = tabsPositions[amountOfTabs - i];
+        currentTabPositionInText = tabsPositions[amountOfTabs - 1 - i];
         //before tab
         lengthBeforeTab = currentTabPositionInText;
         for (int j = 0; j < lengthBeforeTab; ++j)
@@ -99,5 +102,18 @@ void replaceTabsToSpaces(char text[], int textLength)
         /*
             and finally replace old array with array that exist of before, amount of spaces = 1tab, after
         */
+        int newArratLength;
+        int afterTabCounter;
+        newArratLength = lengthBeforeTab + 8 + lengthAfterTab;
+        afterTabCounter = 0;
+        for (int i = 0; i < newArratLength; ++i)
+        {
+            if (i < lengthBeforeTab)
+                text[i] = textBeforeTab[i];
+            else if (i > lengthBeforeTab - 1 + 4 * amountOfTabs)
+                text[i] = textAfterTab[afterTabCounter++];
+            else
+                text[i] = ' ';
+        }
     }
 }
