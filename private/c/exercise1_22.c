@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define MAXLINE
+#define MAXLINE 100
 #define LINELENGTH 12
 /*
     wiersz, ktory mozna zlamac xd\n
@@ -32,18 +32,26 @@ void breakLines(char input[], int inputLength, int maxline)
     int newInputLength;
 
     char lineBefore[maxline];
-    char
 
-        lineLength = 0;
+    lineLength = 0;
     for (int i = 0; i < inputLength; ++i)
     {
-        if (input[i] == '\n')
-            break;
+        if (input[i] == '\n' && lineLength > LINELENGTH)
+        {
+            for (int j = 0; j < lineLength; ++j)
+            {
+            }
+            lineLength = 0;
+            i = -1;
+            continue;
+        }
+        else if (input[i] == '\n')
+        {
+            lineLength = 0;
+            i = 0;
+        }
         line[i] = input[i];
         lineLength++;
-    }
-    if ((lineLength > LINELENGTH))
-    {
     }
 }
 
