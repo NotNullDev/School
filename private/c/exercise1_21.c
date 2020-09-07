@@ -39,43 +39,31 @@ void detab(char input[], int inputLen, int maxline)
 {
     for (int i = 0; i < inputLen; ++i)
     {
-        int space_index;
-        int scpaces_len;
-
-        char before[maxline];
-        char after[maxline];
+        int spacesAmount;
+        int tabsAmount;
+        int totalSpaces;
         char newArray[maxline];
-
-        int beforeLen;
-        int afterLen;
-        int newArrayLen;
-
-        int tabs_amount;
-        int spaces_amount;
-
-        space_index = -1;
-        scpaces_len = 0;
+        int newArrayLength;
         if (input[i] == ' ')
         {
-            space_index = i;
-            scpaces_len = getAmountOfNextSpaces(input, inputLen, i) + 1;
-            tabs_amount = scpaces_len / TAB_LENGTH;
-            spaces_amount = scpaces_len % TAB_LENGTH;
-            newArrayLen = inputLen - 3 * tabs_amount;
-            if (scpaces_len < 4)
+            totalSpaces = 1 + getAmountOfNextSpaces(input, inputLen, i);
+            if (totalSpaces < 4)
                 continue;
-            for (int j = 0; j < space_index; ++j)
+            tabsAmount = totalSpaces / TAB_LENGTH;
+            spacesAmount = totalSpaces % TAB_LENGTH;
+            newArrayLength = inputLen - 3 * tabsAmount;
+            for (int j = 0; j < i; ++j)
                 newArray[j] = input[j];
-            for (int j = space_index; j < space_index + tabs_amount; ++j)
+            for (int j = i; j < i + tabsAmount; ++j)
                 newArray[j] = '\t';
-            for (int j = space_index + tabs_amount; j < space_index + tabs_amount + spaces_amount; ++j)
-                newArray[j] = input[j];
-            for (int j = space_index + tabs_amount + spaces_amount; j < inputLen - 3 * tabs_amount; ++j)
-                newArray[j] = input[j];
-            for (int j = 0; j < newArrayLen; ++j)
+            for (int j = i + tabsAmount; j < i + tabsAmount + spacesAmount; ++j)
+                newArray[j] = ' ';
+            for (int j = i + tabsAmount + spacesAmount; j < newArrayLength; ++j)
+                newArray[j] = input[j + 3 * tabsAmount];
+            newArray[newArrayLength++] = '\0';
+            inputLen = newArrayLength;
+            for (int j = 0; j < newArrayLength; ++j)
                 input[j] = newArray[j];
-            input[newArrayLen] = '\0';
-            inputLen = newArrayLen + 1;
         }
     }
 }
