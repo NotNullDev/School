@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #define MAXLINE 100
-#define LINELENGTH 12
+#define MAXLINELENGTH 12
 /*
     wiersz, ktory mozna zlamac xd\n
     if lineLength > 10 
@@ -31,27 +31,54 @@ void breakLines(char input[], int inputLength, int maxline)
     char newInput[maxline];
     int newInputLength;
 
-    char lineBefore[maxline];
+    char after[maxline];
+    int afterLength;
+    int lastNewLineSignIndex;
 
     lineLength = 0;
+    lastNewLineSignIndex = 0;
+    afterLength = 0;
     for (int i = 0; i < inputLength; ++i)
     {
-        if (input[i] == '\n' && lineLength > LINELENGTH)
+        if (input[i] == '\n' || inputLength == i)
         {
-            for (int j = 0; j < lineLength; ++j)
+            lineLength = i - lineLength - 1;
+            /*
+                fdsfsd   
+            */
+            if (lineLength > MAXLINELENGTH)
             {
+                while (input[i] == ' ' || input[i] == '\t')
+                {
+                    --i;
+                }
+                for (int j = 0; j <= i; ++j)
+                {
+                    line[j] = input[j];
+                }
+                lineLength = i;
+                for (int j = i + 1; j < inputLength; ++j)
+                {
+                    after[j - i - 1] = input[j];
+                    ++afterLength;
+                }
+                for (int j = 0; j < inputLength + 1; ++j)
+                {
+                    if (j < lineLength)
+                        newInput[j] = input[j];
+                    else if (j = lineLength)
+                        newInput[j] = '\n';
+                    else
+                        newInput[j] = input[j - 1];
+                }
+                for (int j = 0; j < inputLength + 1; ++j)
+                {
+                    input[j] = newInput[j];
+                }
+                inputLength++;
+                i++;
             }
-            lineLength = 0;
-            i = -1;
-            continue;
         }
-        else if (input[i] == '\n')
-        {
-            lineLength = 0;
-            i = 0;
-        }
-        line[i] = input[i];
-        lineLength++;
     }
 }
 
