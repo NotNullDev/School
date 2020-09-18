@@ -1,0 +1,1 @@
+int getUserInput(char userInput[]);
