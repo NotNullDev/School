@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+<<<<<<< HEAD
 #define MAXINPUT 100
 
 void escape(char s[], char t[]);
@@ -56,3 +57,10 @@ int getInput(char userInput[])
         ;
     userInput[index] = '\0';
 }
+=======
+int main(void)
+{
+
+        return 0;
+}
+>>>>>>> 89903edab2bf0b229fe62671a370e5d8ef46e467
