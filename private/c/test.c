@@ -1,11 +1,28 @@
 #include <stdio.h>
 
-int lol[100];
-char name[] = {'J', 'a', 'c', 'e', 'k', '\0'};
-char name2[] = "Marcin";
+#include <unistd.h>
+#include <sys/syscall.h>
+#include <fcntl.h>
+
+#define PERMISSIONS 0666
+#define BUFSIZ 1000000
 
 int main(void)
 {
-    printf("Imona: %s, %s\n", name, name2);
+    int fd; //file Descriptor
+    FILE *fp;
+    char fileData[BUFSIZ];
+    int currentPosition, i = 0;
+    char filePath[] = "/proc/5269/mem";
+
+    fd = open(filePath, O_RDWR, PERMISSIONS);
+
+    while (lseek(fd, currentPosition, 0) != -1)
+    {
+        read(fd, fileData, 1);
+        if (fileData[i] != '\0')
+            printf("[%x] ", fileData[i++]);
+    }
+
     return 0;
 }
