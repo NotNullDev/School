@@ -1,0 +1,43 @@
+instalowanie systemu ubuntu server na vmbox v5
+
+120gb dynamic dysk bo bedziemy tworzyli pratcje
+
+korzystanie z tmuxa
+nowa sesja: tmux new -s [session name]
+ctrl + b ; // tmux command line
+0-9 //switch tabs
+c //create new tab
+w //choose from list
+, // rename
+o // next pane
+x // close current
+
+korzystanie z lynx 
+lynx http://google.com //example
+esc : //command line
+
+
+tworzenie ubuntu server
+--wszystko default
+
+dodajemy swap 10gb --ram na dysku twardym
+dodajemy partycje ext4
+/boot
+/
+/home
+
+
+dysk:
+
+
+per 
+
+
+
+mkdir -p /a/b/c/d
+
+
+
+
+
+

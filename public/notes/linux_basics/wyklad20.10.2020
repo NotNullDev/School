@@ -1,0 +1,28 @@
+ps // list of current processes ran by user
+
+\ - umozliwia pisanie w kolejnym wierszu polecenia
+result : to jest polecenie wielolijkowe
+np:
+echo to \
+jest \
+polecenie wielolinijkowe
+
+
+date //pokazuje aktualna date
+
+ls -l // pokazuje ilosc plikow w katalogu
+
+type <commad> // pokazuje typ programu
+np przy wykonaniu cd nie jest tworzony nowy proces
+
+chmod // zmiana praw dostepu do pliku
+umask : ustawienie maski praw dostepu
+
+rmdir //remove directory
+
+cat more less head tail [file] // commands to show
+
+grep work [file...]  // mozna znalezc wzorzec w jakims pliku
+text to copy 
+
+prawa dostepu // nastepny wyklad
