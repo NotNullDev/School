@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Start programu: `date`"
+echo "losowana liczba : $RANDOM"
+
+if [ $# -eq 1 ]; then
+    echo Znaleziono 1 arg o wartosci $1 w pliku $0
+    test [ $1 -eq Jacek ]
+    echo Twoje imie to 
+fi
+
