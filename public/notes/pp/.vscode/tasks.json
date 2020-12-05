@@ -3,13 +3,13 @@
 	"tasks": [
 		{
 			"type": "shell",
-			"label": "C/C++: gcc build active file",
+			"label": "build current c file",
 			"command": "/usr/bin/gcc",
 			"args": [
 				"-g",
 				"${file}",
 				"-o",
-				"${workspaceFolder}/main"
+				"${workspaceFolder}/main",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -21,6 +21,28 @@
 				"kind": "build",
 				"isDefault": true
 			}
+		},
+		{
+			"type": "shell",
+			"label": "build c  and h files in current dir ",
+			"command": "/usr/bin/gcc",
+			"args": [
+				"-g",
+				"${fileDirname}/*.c",
+				"-o",
+				"${workspaceFolder}/main",
+				"-I",
+				"${workspaceFolder}/include",
+				"-I",
+				"${fileDirname}"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
 		}
 	]
 }
